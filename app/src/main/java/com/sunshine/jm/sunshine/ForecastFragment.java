@@ -74,7 +74,9 @@ public class ForecastFragment extends Fragment {
             String forecastJsonStr = null;
 
             try {
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+                String base = "http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7";
+                String keyAPI = "&APPID=" + BuildConfig.OW_KEY_API;
+                URL url = new URL(base.concat(keyAPI));
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
