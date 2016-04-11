@@ -19,7 +19,7 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'OW_KEY_API', "53ba9ff6aa6424ce5a966331240dd568"
+        it.buildConfigField 'String', 'OW_KEY_API', APIOpenWethear
     }
 }
 
