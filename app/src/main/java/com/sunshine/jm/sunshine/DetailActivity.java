@@ -2,16 +2,17 @@ package com.sunshine.jm.sunshine;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
@@ -47,7 +48,16 @@ public class DetailActivity extends AppCompatActivity {
             return true;
         }
 
+        if ( id == R.id.action_share){
+            doShareWeather();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doShareWeather(){
+
     }
 
     /**
@@ -55,7 +65,11 @@ public class DetailActivity extends AppCompatActivity {
      */
     public static class DetailFragment extends Fragment {
 
+        private static final String SUNSHIE_HASHTAG = "#SunshineApp";
+        private String shareText;
+
         public DetailFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -67,11 +81,33 @@ public class DetailActivity extends AppCompatActivity {
 
             //Check intent is not null and has Extra.
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
-                String data = intent.getStringExtra(Intent.EXTRA_TEXT);
+                shareText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 TextView detail = (TextView) rootView.findViewById(R.id.detail_text);
-                detail.setText(data);
+                detail.setText(shareText);
             }
             return rootView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.menu_detail, menu);
+
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+
+            ShareActionProvider shareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+            if ( shareAction != null) {
+                shareAction.setShareIntent(intentWeatherShare());
+            }
+        }
+
+        private Intent intentWeatherShare(){
+            Intent intentShare = new Intent(Intent.ACTION_SEND);
+            intentShare.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intentShare.setType("text/plain");
+            intentShare.putExtra(Intent.EXTRA_TEXT,
+                    shareText + " " + SUNSHIE_HASHTAG );
+            return intentShare;
         }
     }
 }
