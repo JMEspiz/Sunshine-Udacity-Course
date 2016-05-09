@@ -1,5 +1,6 @@
 package com.sunshine.jm.sunshine;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         int id = menuItem.getItemId();
 
         if(R.id.action_settings == id){
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
